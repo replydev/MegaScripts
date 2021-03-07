@@ -10,6 +10,7 @@ import random
 import string
 import threading
 
+EMAIL_LENGTH = 16
 MINIMUM_PASSWORD_LENGTH = 32
 ACCOUNT_TO_GENERATE = int(input("Insert how many account have i to generate: "))
 
@@ -106,7 +107,7 @@ class MegaAccount:
 
 
 def new_account():
-    name = "".join(random.choice(string.ascii_lowercase) for x in range(12))
+    name = "".join(random.choice(string.ascii_lowercase) for x in range(EMAIL_LENGTH))
     password = name = "".join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for x in range(MINIMUM_PASSWORD_LENGTH))
     acc = MegaAccount(name, password)
     acc.register()
