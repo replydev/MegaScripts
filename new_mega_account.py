@@ -95,6 +95,7 @@ class MegaAccount:
         if "registered successfully!" in str(verification.stdout):
             print("Success. Account Details are:")
             details = f"{self.email} - {self.password}"
+            print(details)
 
             # save to file
             with open("accounts.txt", "a") as f:
