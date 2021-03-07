@@ -105,8 +105,8 @@ class MegaAccount:
 
 
 def new_account():
-    name = "".join(random.choice(string.ascii_letters) for x in range(12))
-    password = name = "".join(random.choice(string.printable) for x in range(MINIMUM_PASSWORD_LENGTH))
+    name = "".join(random.choice(string.ascii_lowercase) for x in range(12))
+    password = name = "".join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for x in range(MINIMUM_PASSWORD_LENGTH))
     acc = MegaAccount(name, password)
     acc.register()
     if acc.no_verify_command():
