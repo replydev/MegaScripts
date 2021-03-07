@@ -12,8 +12,8 @@ import csv
 import threading
 
 MINIMUM_PASSWORD_LENGTH = 16
-PASSWORD = input("Input your password: ")  # atleast 8 chars
 ACCOUNT_TO_GENERATE = int(input("Insert how many account have i to generate: "))
+PASSWORD = input("Insert your password: ")  # atleast 8 chars
 
 while len(PASSWORD) < MINIMUM_PASSWORD_LENGTH:
     print("Please insert at least %d chars!" % (MINIMUM_PASSWORD_LENGTH))
@@ -53,8 +53,16 @@ class MegaAccount:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
+        output = registration.stdout
 
-        self.verify_command = registration.stdout
+        rows = output.split("\n")
+        self.verify_command = None
+        for row in rows:
+            if "megareg --verify" in row:
+                self.verify_command = row
+        
+    def no_verify_command(self):
+        return self.verify_command is None
 
     def verify(self):
         # check if there is mail
@@ -107,9 +115,11 @@ def new_account():
     name = "".join(random.choice(string.ascii_letters) for x in range(12))
     acc = MegaAccount(name, PASSWORD)
     acc.register()
-    print("Registered. Waiting for verification email...")
-    acc.verify()
-
+    if acc.no_verify_command():
+        print("Cannot retrieve verify command, sorry")
+    else:
+        print("Registered. Waiting for verification email...")
+        acc.verify()
 
 if __name__ == "__main__":
     # how many accounts to create at once (keep the number under 10)
