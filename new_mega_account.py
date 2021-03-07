@@ -1,3 +1,4 @@
+# fork of https://github.com/IceWreck/MegaScripts
 # Create New Mega Accounts
 # saves credentials to a file called accounts.csv
 
@@ -10,8 +11,13 @@ import string
 import csv
 import threading
 
-PASSWORD = "examplepassword"  # atleast 8 chars
+MINIMUM_PASSWORD_LENGTH = 16
+PASSWORD = input("Input your password: ")  # atleast 8 chars
+ACCOUNT_TO_GENERATE = int(input("Insert how many account have i to generate: "))
 
+while len(PASSWORD) < MINIMUM_PASSWORD_LENGTH:
+    print("Please insert at least %d chars!" % (MINIMUM_PASSWORD_LENGTH))
+    PASSWORD = input("Input your password: ")
 
 def find_url(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
@@ -34,9 +40,7 @@ class MegaAccount:
         # begin resgistration
         registration = subprocess.run(
             [
-                "megatools",
-                "reg",
-                "--scripted",
+                "megareg",
                 "--register",
                 "--email",
                 self.email,
@@ -109,7 +113,6 @@ def new_account():
 
 if __name__ == "__main__":
     # how many accounts to create at once (keep the number under 10)
-    num_acc = 5
-    for count in range(num_acc):
+    for count in range(ACCOUNT_TO_GENERATE):
         t = threading.Thread(target=new_account)
         t.start()
