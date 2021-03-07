@@ -11,13 +11,8 @@ import string
 import csv
 import threading
 
-MINIMUM_PASSWORD_LENGTH = 16
+MINIMUM_PASSWORD_LENGTH = 32
 ACCOUNT_TO_GENERATE = int(input("Insert how many account have i to generate: "))
-PASSWORD = input("Insert your password: ")  # atleast 8 chars
-
-while len(PASSWORD) < MINIMUM_PASSWORD_LENGTH:
-    print("Please insert at least %d chars!" % (MINIMUM_PASSWORD_LENGTH))
-    PASSWORD = input("Input your password: ")
 
 def find_url(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
@@ -113,7 +108,8 @@ class MegaAccount:
 
 def new_account():
     name = "".join(random.choice(string.ascii_letters) for x in range(12))
-    acc = MegaAccount(name, PASSWORD)
+    password = name = "".join(random.choice(string.printable) for x in range(MINIMUM_PASSWORD_LENGTH))
+    acc = MegaAccount(name, password)
     acc.register()
     if acc.no_verify_command():
         print("Cannot retrieve verify command, sorry")
